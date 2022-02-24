@@ -1,3 +1,4 @@
+![BuildStatus](https://github.com/apblair/project7/actions/workflows/main.yml/badge.svg?event=push)
 # Project 7
 Fully Connected Neural Network
 
