@@ -78,6 +78,19 @@ class NeuralNetwork:
             param_dict['b' + str(layer_idx)] = np.random.randn(output_dim, 1) * 0.1
         return param_dict
 
+    def _select_activation_function(self, activation: str):
+        """
+        Return NeuralNetwork activation function based on
+
+        Args:
+            activation : str
+                Name of activation function for current layer
+        """
+        if activation == "relu":
+            return self._relu
+        elif activation == "sigmoid":
+            return self._sigmoid
+
     def _single_forward(self,
                         W_curr: ArrayLike,
                         b_curr: ArrayLike,
@@ -102,7 +115,10 @@ class NeuralNetwork:
             Z_curr: ArrayLike
                 Current layer linear transformed matrix.
         """
-        pass
+        Z_curr = A_prev.dot(W_curr.T) + b_curr.T # linear transformation
+        activation_function = self._select_activation_function(activation)
+        A_curr = activation_function(Z_curr)
+        return Z_curr,A_curr
 
     def forward(self, X: ArrayLike) -> Tuple[ArrayLike, Dict[str, ArrayLike]]:
         """
@@ -239,7 +255,7 @@ class NeuralNetwork:
             nl_transform: ArrayLike
                 Activation function output.
         """
-        pass
+        return 1 / (1 + np.exp(-Z))
 
     def _relu(self, Z: ArrayLike) -> ArrayLike:
         """
@@ -253,7 +269,8 @@ class NeuralNetwork:
             nl_transform: ArrayLike
                 Activation function output.
         """
-        pass
+        return np.maximum(0, Z)
+
 
     def _sigmoid_backprop(self, dA: ArrayLike, Z: ArrayLike):
         """
