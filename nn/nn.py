@@ -78,7 +78,7 @@ class NeuralNetwork:
             param_dict['b' + str(layer_idx)] = np.random.randn(output_dim, 1) * 0.1
         return param_dict
 
-    def _select_activation_function(self, activation: str):
+    def _select_function(self, function_type=None, activation=None):
         """
         Return NeuralNetwork activation function based on
 
@@ -86,10 +86,17 @@ class NeuralNetwork:
             activation : str
                 Name of activation function for current layer
         """
-        if activation == "relu":
-            return self._relu
-        elif activation == "sigmoid":
-            return self._sigmoid
+        if function_type == 'forward':
+            if activation == "relu":
+                return self._relu
+            elif activation == "sigmoid":
+                return self._sigmoid
+
+        elif function_type == "backprop":
+            if activation == "relu":
+                return self._relu_backprop
+            elif activation == "sigmoid":
+                return self._sigmoid_backprop
 
     def _single_forward(self,
                         W_curr: ArrayLike,
@@ -116,8 +123,8 @@ class NeuralNetwork:
                 Current layer linear transformed matrix.
         """
         Z_curr = A_prev.dot(W_curr.T) + b_curr.T # linear transformation
-        activation_function = self._select_activation_function(activation)
-        A_curr = activation_function(Z_curr)
+        forward_activation_function = self._select_function(function_type='forward', activation=activation)
+        A_curr = forward_activation_function(Z_curr)
         return Z_curr,A_curr
 
     def forward(self, X: ArrayLike) -> Tuple[ArrayLike, Dict[str, ArrayLike]]:
@@ -168,7 +175,10 @@ class NeuralNetwork:
             db_curr: ArrayLike
                 Partial derivative of loss function with respect to current layer bias matrix.
         """
-        pass
+        backprop_activation_function = self._select_function(function_type='backprop', activation=activation_curr)
+        dZ_curr = backprop_activation_function(dA_curr, Z_curr)
+        dA_prev, dW_curr, db_curr = np.dot(dZ_curr, W_curr), np.dot(dZ_curr.T, A_prev), np.sum(dZ_curr, axis = 0).reshape(b_curr.shape)
+        return dA_prev, dW_curr, db_curr
 
     def backprop(self, y: ArrayLike, y_hat: ArrayLike, cache: Dict[str, ArrayLike]):
         """
@@ -286,7 +296,8 @@ class NeuralNetwork:
             dZ: ArrayLike
                 Partial derivative of current layer Z matrix.
         """
-        pass
+        dZ = self._sigmoid(Z)*(1-self._sigmoid(Z))
+        return dZ
 
     def _relu_backprop(self, dA: ArrayLike, Z: ArrayLike) -> ArrayLike:
         """
@@ -302,7 +313,8 @@ class NeuralNetwork:
             dZ: ArrayLike
                 Partial derivative of current layer Z matrix.
         """
-        pass
+        dZ = (Z > 0).astype(int) * dA
+        return dZ
 
     def _binary_cross_entropy(self, y: ArrayLike, y_hat: ArrayLike) -> float:
         """
