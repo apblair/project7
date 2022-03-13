@@ -80,7 +80,7 @@ class NeuralNetwork:
 
     def _select_function(self, function_type=None, activation=None):
         """
-        Return NeuralNetwork activation function based on
+        Select an activation function
 
         Args:
             activation : str
@@ -141,7 +141,10 @@ class NeuralNetwork:
             cache: Dict[str, ArrayLike]:
                 Dictionary storing Z and A matrices from `_single_forward` for use in backprop.
         """
-        pass
+        # print(self._param_dict)
+        print(self.arch)
+        for idx, layer in enumerate(self.arch):
+            print(idx, layer)
 
     def _single_backprop(self,
                          W_curr: ArrayLike,
