@@ -7,11 +7,17 @@ from nn import nn, preprocess
 # TODO: Write your test functions and associated docstrings below.
 
 def test_forward():
-    network = nn.NeuralNetwork(nn_arch = [{"input_dim": 4, "output_dim": 3, "activation": "relu"},
-                                        {"input_dim": 3, "output_dim": 2, "activation": "relu"}],
+    '''
+    Check NeuralNetwork.forward with a relu activation function using manual calculation 
+    '''
+    network = nn.NeuralNetwork(nn_arch = [{"input_dim": 4, "output_dim": 2, "activation": "relu"},
+                                        {"input_dim": 2, "output_dim": 1, "activation": "relu"}],
                                         lr = 0.01, seed = 26, batch_size = 1, epochs = 1, loss_function = "mse")
-    network.forward(np.array([1,2,3,4]))
-
+    network._param_dict = {"W1": np.array([[1, 2, 3, 4]]), "b1": np.array([[6],[6]]),
+                            "W2": np.array([[1,2]]), "b2":np.array([[6]])}
+    A_final, cache = network.forward(np.array([4,3,2,1]))
+    assert np.array_equal(cache['A1'], cache['Z1'])
+    assert np.array_equal(cache['A2'], cache['Z2'], A_final)
 
 def test_single_forward():
     '''
