@@ -15,7 +15,7 @@ def test_forward():
 
 def test_single_forward():
     '''
-    Check NeuralNetwork._single_forward against manual calculation using a relu activation function
+    Check NeuralNetwork._single_forward with a relu activation function using manual calculation 
     '''
     network = nn.NeuralNetwork(nn_arch = [{"input_dim": 4, "output_dim": 1, "activation": "relu"}],
                            lr = 0.01, seed = 26, batch_size = 1, epochs = 1, loss_function = "mse")
@@ -28,7 +28,7 @@ def test_single_forward():
 
 def test_single_backprop():
     '''
-    Check NeuralNetwork._single_backprop against manual calculation using a relu activation function
+    Check NeuralNetwork._single_backprop with a relu activation function using manual calculation 
     '''
     network = nn.NeuralNetwork(nn_arch = [{"input_dim": 4, "output_dim": 1, "activation": "relu"}],
                            lr = 0.01, seed = 26, batch_size = 1, epochs = 1, loss_function = "mse")
