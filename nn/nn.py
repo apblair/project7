@@ -28,6 +28,8 @@ class NeuralNetwork:
             Max number of epochs for training.
         loss_function: str
             Name of loss function.
+        epsilon: float
+            Binary cross entropy epsilon parameter to prevent log(0)
 
     Attributes:
         arch: list of dicts
@@ -40,7 +42,7 @@ class NeuralNetwork:
                  batch_size: int,
                  epochs: int,
                  loss_function: str,
-                 epsilon: 1e-5):
+                 epsilon= 1e-5):
         # Saving architecture
         self.arch = nn_arch
         # Saving hyperparameters
@@ -82,10 +84,14 @@ class NeuralNetwork:
 
     def _select_function(self, function_type=None, activation=None, loss=None):
         """
-        Select an activation function
+        Return a function
 
         Args:
+            function_type : str
+                Name of activation function for current layer
             activation : str
+                Name of activation function for current layer
+            loss : str
                 Name of activation function for current layer
         """
         if function_type == 'forward':
@@ -289,7 +295,8 @@ class NeuralNetwork:
             nl_transform: ArrayLike
                 Activation function output.
         """
-        return 1 / (1 + np.exp(-Z))
+        nl_transform = 1 / (1 + np.exp(-Z))
+        return nl_transform
 
     def _relu(self, Z: ArrayLike) -> ArrayLike:
         """
@@ -303,8 +310,8 @@ class NeuralNetwork:
             nl_transform: ArrayLike
                 Activation function output.
         """
-        return np.maximum(0, Z)
-
+        nl_transform = np.maximum(0, Z)
+        return nl_transform
 
     def _sigmoid_backprop(self, dA: ArrayLike, Z: ArrayLike):
         """
@@ -354,7 +361,8 @@ class NeuralNetwork:
             loss: float
                 Average loss over mini-batch.
         """
-        return  - np.average(y * np.log(y_hat + self.epsilon) + (1 - y_hat) * np.log(1 - y_hat + self.epsilon)) # add epsilon to log function to prevent log(0)
+        loss = - np.average(y * np.log(y_hat + self.epsilon) + (1 - y_hat) * np.log(1 - y_hat + self.epsilon)) # add epsilon to log function to prevent log(0)
+        return loss
 
     def _binary_cross_entropy_backprop(self, y: ArrayLike, y_hat: ArrayLike) -> ArrayLike:
         """
@@ -386,7 +394,8 @@ class NeuralNetwork:
             loss: float
                 Average loss of mini-batch.
         """
-        return np.square(y-y_hat).mean()
+        loss = np.square(y-y_hat).mean()
+        return loss
 
     def _mean_squared_error_backprop(self, y: ArrayLike, y_hat: ArrayLike) -> ArrayLike:
         """

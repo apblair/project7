@@ -60,8 +60,15 @@ def test_binary_cross_entropy_backprop():
 
 
 def test_mean_squared_error():
-    pass
-
+    '''
+    Check NeuralNetwork._mean_squared_error using sklearn metrics mean squared error implementation 
+    '''
+    from sklearn.metrics import mean_squared_error
+    network = nn.NeuralNetwork(nn_arch = [{"input_dim": 4, "output_dim": 1, "activation": "relu"}],
+                           lr = 0.01, seed = 26, batch_size = 1, epochs = 1, loss_function = "mse")
+    y = np.array([3, -0.5, 2, 7])
+    y_hat = np.array([2.5, 0.0, 2, 8])
+    assert network._mean_squared_error(y, y_hat) == mean_squared_error(y, y_hat)
 
 def test_mean_squared_error_backprop():
     pass
@@ -77,3 +84,4 @@ def test_sample_seqs():
 test_single_forward()
 test_single_backprop()
 test_forward()
+test_mean_squared_error()
