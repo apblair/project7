@@ -228,7 +228,7 @@ class NeuralNetwork:
         loss_function = self._select_function(function_type='loss', loss=self._loss_func)
         dA_curr = loss_function(y, y_hat)
         grad_dict = {}
-        for idx, layer in enumerate(self.arch)[::-1]:
+        for idx, layer in list(enumerate(self.arch))[::-1]:
             layer_idx = idx + 1
             dA_prev, dW_curr, db_curr = self._single_backprop(self._param_dict['W'+str(layer_idx)], # W_curr
                                                             self._param_dict['b'+str(layer_idx)], # b_curr
@@ -236,8 +236,11 @@ class NeuralNetwork:
                                                             cache['A'+ str(layer_idx)], # A_prev
                                                             dA_curr, # dA_curr
                                                             layer['activation']) # activation_curr
-            print(dA_prev, dW_curr, db_curr)
-        # return grad_dict
+            dA_curr = dA_prev
+            grad_dict['dW' + str(layer_idx)] = dW_curr
+            grad_dict['db' + str(layer_idx)] = db_curr
+            grad_dict['dA_prev' + str(layer_idx)] = dA_prev
+        return grad_dict
 
 
     def _update_params(self, grad_dict: Dict[str, ArrayLike]):
