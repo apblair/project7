@@ -20,9 +20,9 @@ classifier for transcription factor binding sites.
 
 ## Step 1: Finish the neural network API
 TODO:
-* Finish all incomplete methods that have a pass statement in the NeuralNetwork class in the nn.py file
-* Finish the 'one_hot_encode_seqs' function in the preprocess.py file
-* Finish the 'sample_seqs' function in the preprocess.py file
+- [] Finish all incomplete methods that have a pass statement in the NeuralNetwork class in the nn.py file
+- [x] Finish the 'one_hot_encode_seqs' function in the preprocess.py file
+- [] Finish the 'sample_seqs' function in the preprocess.py file
 
 
 ## Step 2: Generate your Autoencoder
@@ -78,7 +78,7 @@ TODO:
 
 ## Implementation of API (15 points)
 * Proper implementation of NeuralNetwork class (13 points)
-* Proper implementation of 'one_hot_encode_seqs' function (1 point)
+-[x] Proper implementation of 'one_hot_encode_seqs' function (1 point)
 * Proper implementation of 'sample_seqs' function (1 point)
 
 ## Autoencoder (10 points)
@@ -99,13 +99,13 @@ TODO:
 
 ## Testing (7 points)
 Proper unit tests for:
-* forward method (1 point)
-* _single_forward method (1 point)
-* _single_backprop method (1 point)
+-[x] forward method (1 point)
+-[x] _single_forward method (1 point)
+-[x] _single_backprop method (1 point)
 * predict method (1 point)
-* binary_cross_entropy loss method (0.5 points)
+-[x] binary_cross_entropy loss method (0.5 points)
 * binary_cross_entropy_backprop method (0.5 points)
-* mean_squared_error loss function (0.5 points)
+-[x] mean_squared_error loss function (0.5 points)
 * mean_squared_error_backprop (0.5 points)
 * one_hot_encode_seqs function (0.5 points)
 * sample_seqs function (0.5 points)

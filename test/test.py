@@ -52,7 +52,14 @@ def test_predict():
 
 
 def test_binary_cross_entropy():
-    pass
+    '''
+    Check NeuralNetwork._binary_cross_entropy using manual calculation
+    '''
+    network = nn.NeuralNetwork(nn_arch = [{"input_dim": 4, "output_dim": 1, "activation": "relu"}],
+                           lr = 0.01, seed = 26, batch_size = 1, epochs = 1, loss_function = "mse")
+    y = np.array([1, 0, 1, 0])
+    y_hat = np.array([0.5, 0.01, 0.01, 0.9])
+    assert np.round(network._binary_cross_entropy(y,y_hat),2) == 1.47
 
 
 def test_binary_cross_entropy_backprop():
@@ -85,3 +92,4 @@ test_single_forward()
 test_single_backprop()
 test_forward()
 test_mean_squared_error()
+test_binary_cross_entropy()
