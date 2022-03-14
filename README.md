@@ -9,9 +9,9 @@ Fully Connected Neural Network
 In this assignment, you will try out your machine learning skills by first implementing a neural network
 class from (almost) scratch. You will then apply your class to implement both
 
-**(1) a simple 64x16x64 autoencoder** - [ ]
+**(1) a simple 64x16x64 autoencoder** 
 
-**(2) a classifier for transcription factor binding sites** - [ ]
+**(2) a classifier for transcription factor binding sites** 
 
 In this assigment you will begin by finishing the API for generating fully connected neural networks from scratch.
 Next, you will make a jupyter notebook where you will implement your 64x16x64 neural network and your 
