@@ -39,7 +39,8 @@ class NeuralNetwork:
                  seed: int,
                  batch_size: int,
                  epochs: int,
-                 loss_function: str):
+                 loss_function: str,
+                 epsilon: 1e-5):
         # Saving architecture
         self.arch = nn_arch
         # Saving hyperparameters
@@ -47,7 +48,8 @@ class NeuralNetwork:
         self._seed = seed
         self._epochs = epochs
         self._loss_func = loss_function
-        self._batch_size = batch_size
+        self._batch_size = batch_size,
+        self._epsilon = epsilon
         # Initializing the parameter dictionary for use in training
         self._param_dict = self._init_params()
 
@@ -78,7 +80,7 @@ class NeuralNetwork:
             param_dict['b' + str(layer_idx)] = np.random.randn(output_dim, 1) * 0.1
         return param_dict
 
-    def _select_function(self, function_type=None, activation=None):
+    def _select_function(self, function_type=None, activation=None, loss=None):
         """
         Select an activation function
 
@@ -97,6 +99,13 @@ class NeuralNetwork:
                 return self._relu_backprop
             elif activation == "sigmoid":
                 return self._sigmoid_backprop
+        
+        elif function_type == "loss":
+            if loss == "mse":
+                return self._mean_squared_error_backprop
+            elif loss == "bce":
+                return self._binary_cross_entropy_backprop
+
 
     def _single_forward(self,
                         W_curr: ArrayLike,
@@ -143,7 +152,6 @@ class NeuralNetwork:
         """
         cache = {"A0":X} # initialize cache with input matrix at zero index
         A_prev = X
-        print(self._param_dict)
         for idx, layer in enumerate(self.arch):
             # Run forward propagation
             layer_idx = idx + 1
@@ -152,11 +160,9 @@ class NeuralNetwork:
                                 A_prev, # A_prev
                                 layer['activation']) # activation
             A_prev = A_curr # set layer activation matrix
-            
             # Store Z and A matrices in cache dictionary for use in backprop
             cache["A" + str(layer_idx)] = A_curr 
             cache["Z" + str(layer_idx)] = Z_curr
-
         return A_prev, cache
 
     def _single_backprop(self,
@@ -213,7 +219,9 @@ class NeuralNetwork:
             grad_dict: Dict[str, ArrayLike]
                 Dictionary containing the gradient information from this pass of backprop.
         """
-        pass
+        loss_function = self._select_function(function_type='loss', loss=self._loss_func)
+        print(loss_function)
+        grad_dict = {}
 
     def _update_params(self, grad_dict: Dict[str, ArrayLike]):
         """
@@ -346,7 +354,7 @@ class NeuralNetwork:
             loss: float
                 Average loss over mini-batch.
         """
-        pass
+        return  - np.average(y * np.log(y_hat + self.epsilon) + (1 - y_hat) * np.log(1 - y_hat + self.epsilon)) # add epsilon to log function to prevent log(0)
 
     def _binary_cross_entropy_backprop(self, y: ArrayLike, y_hat: ArrayLike) -> ArrayLike:
         """
@@ -378,7 +386,7 @@ class NeuralNetwork:
             loss: float
                 Average loss of mini-batch.
         """
-        pass
+        return np.square(y-y_hat).mean()
 
     def _mean_squared_error_backprop(self, y: ArrayLike, y_hat: ArrayLike) -> ArrayLike:
         """
@@ -394,7 +402,7 @@ class NeuralNetwork:
             dA: ArrayLike
                 partial derivative of loss with respect to A matrix.
         """
-        pass
+        return 2 * (y_hat - y) / len(y)
 
     def _loss_function(self, y: ArrayLike, y_hat: ArrayLike) -> float:
         """
