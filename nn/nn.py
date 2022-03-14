@@ -140,7 +140,7 @@ class NeuralNetwork:
         Z_curr = A_prev.dot(W_curr.T) + b_curr.T # linear transformation
         forward_activation_function = self._select_function(function_type='forward', activation=activation)
         A_curr = forward_activation_function(Z_curr)
-        return Z_curr,A_curr
+        return A_curr, Z_curr
 
     def forward(self, X: ArrayLike) -> Tuple[ArrayLike, Dict[str, ArrayLike]]:
         """
@@ -255,7 +255,8 @@ class NeuralNetwork:
         Returns:
             None
         """
-        pass
+        for k in self._param_dict:
+            self._param_dict[k] = self._param_dict[k] - self._lr*grad_dict[k]
 
     def fit(self,
             X_train: ArrayLike,
@@ -281,7 +282,31 @@ class NeuralNetwork:
             per_epoch_loss_val: List[float]
                 List of per epoch loss for validation set.
         """
-        pass
+        per_epoch_loss_train = []
+        per_epoch_loss_val = []
+        for epoch in range(self._epochs):
+            # shuffle and subset training data
+            shuffled_training_indices = np.random.permutation(len(y_train))
+            X_batch_n_epoch = np.array_split(X_train[shuffled_training_indices],self._batch_size)
+            y_batch_n_epoch = np.array_split(y_train[shuffled_training_indices], self._batch_size)
+            
+            # train model
+            for X, y in zip(X_batch_n_epoch, y_batch_n_epoch):
+                y_hat, cache = self.forward(X)
+                grad_dict = self.backprop(y, y_hat, cache)
+                self._update_params(grad_dict)
+            
+            # Predict
+            y_hat_train = self.predict(X_train)
+            y_hat_val = self.predict(X_val)    
+            
+            # Compute training and validation loss for each epoch
+            loss_function = self._select_function(function_type='loss', loss=self._loss_func)
+            per_epoch_loss_train.append(loss_function(y_train, y_hat_train))
+            per_epoch_loss_val.append(loss_function(y_val, y_hat_val))
+        
+        return per_epoch_loss_train, per_epoch_loss_val
+        
 
     def predict(self, X: ArrayLike) -> ArrayLike:
         """
@@ -295,7 +320,8 @@ class NeuralNetwork:
             y_hat: ArrayLike
                 Prediction from the model.
         """
-        pass
+        y_hat, cache = self.forward(X)
+        return y_hat
 
     def _sigmoid(self, Z: ArrayLike) -> ArrayLike:
         """

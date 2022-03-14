@@ -48,8 +48,16 @@ def test_single_backprop():
     assert dA_prev[0][0] and dW_curr[0][-1] == db_curr[[0]]
 
 def test_predict():
-    pass
-
+    '''
+    Check NeuralNetwork.predict using manual calculation
+    '''
+    network = nn.NeuralNetwork(nn_arch = [{"input_dim": 4, "output_dim": 2, "activation": "relu"},
+                                        {"input_dim": 2, "output_dim": 1, "activation": "relu"}],
+                                        lr = 0.01, seed = 26, batch_size = 1, epochs = 1, loss_function = "mse")
+    network._param_dict = {"W1": np.array([[1, 2, 3, 4]]), "b1": np.array([[6],[6]]),
+                            "W2": np.array([[1,2]]), "b2":np.array([[6]])}
+    y_hat = network.predict(np.array([1,1,2,2]))
+    assert y_hat[0][0] == 75
 
 def test_binary_cross_entropy():
     '''
@@ -112,3 +120,4 @@ test_mean_squared_error_backprop()
 test_binary_cross_entropy()
 test_binary_cross_entropy_backprop()
 test_one_hot_encode()
+test_predict()
