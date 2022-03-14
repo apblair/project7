@@ -53,18 +53,24 @@ def test_predict():
 
 def test_binary_cross_entropy():
     '''
-    Check NeuralNetwork._binary_cross_entropy using manual calculation
+    Check NeuralNetwork._binary_cross_entropy using sklearn metrics cross entropy loss implementation
     '''
+    from sklearn.metrics import log_loss
     network = nn.NeuralNetwork(nn_arch = [{"input_dim": 4, "output_dim": 1, "activation": "relu"}],
                            lr = 0.01, seed = 26, batch_size = 1, epochs = 1, loss_function = "mse")
     y = np.array([1, 0, 1, 0])
     y_hat = np.array([0.5, 0.01, 0.01, 0.9])
-    assert np.round(network._binary_cross_entropy(y,y_hat),2) == 1.47
-
+    assert np.round(network._binary_cross_entropy(y,y_hat),2) == np.round(log_loss(y,y_hat),2)
 
 def test_binary_cross_entropy_backprop():
-    pass
-
+    '''
+    Check NeuralNetwork._binary_cross_entropy_backprop using manual calculation
+    '''
+    network = nn.NeuralNetwork(nn_arch = [{"input_dim": 4, "output_dim": 1, "activation": "relu"}],
+                           lr = 0.01, seed = 26, batch_size = 1, epochs = 1, loss_function = "mse")
+    y = np.array([1, 1, 0, 0])
+    y_hat = np.array([0.9, 0.9, 0.1, 0.1])
+    assert np.allclose(network._binary_cross_entropy_backprop(y,y_hat), np.array([-1.11111111, -1.11111111, 1.11111111, 1.11111111]))
 
 def test_mean_squared_error():
     '''
@@ -73,18 +79,24 @@ def test_mean_squared_error():
     from sklearn.metrics import mean_squared_error
     network = nn.NeuralNetwork(nn_arch = [{"input_dim": 4, "output_dim": 1, "activation": "relu"}],
                            lr = 0.01, seed = 26, batch_size = 1, epochs = 1, loss_function = "mse")
-    y = np.array([3, -0.5, 2, 7])
-    y_hat = np.array([2.5, 0.0, 2, 8])
+    y = np.array([1, 0, 1, 0])
+    y_hat = np.array([0.5, 0.01, 0.01, 0.9])
     assert network._mean_squared_error(y, y_hat) == mean_squared_error(y, y_hat)
 
 def test_mean_squared_error_backprop():
-    pass
-
+    '''
+    Check NeuralNetwork._mean_squared_error_backprop using manual calculation
+    '''
+    network = nn.NeuralNetwork(nn_arch = [{"input_dim": 4, "output_dim": 1, "activation": "relu"}],
+                           lr = 0.01, seed = 26, batch_size = 1, epochs = 1, loss_function = "mse")
+    y = np.array([1, 0, 1, 0])
+    y_hat = np.array([0.5, 0.01, 0.01, 0.9])
+    assert np.allclose(network._mean_squared_error_backprop(y,y_hat), np.array([-0.25, 0.005, -0.495, 0.45 ]))
 
 def test_one_hot_encode():
-    """
+    '''
     Check preprocess.one_hot_encode_seqs using manual calculation
-    """
+    '''
     encoding = preprocess.one_hot_encode_seqs(['AGA'])
     assert np.allclose(encoding, np.array([1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0]))
 
@@ -96,5 +108,7 @@ test_single_forward()
 test_single_backprop()
 test_forward()
 test_mean_squared_error()
+test_mean_squared_error_backprop()
 test_binary_cross_entropy()
+test_binary_cross_entropy_backprop()
 test_one_hot_encode()

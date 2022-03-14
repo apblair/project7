@@ -375,7 +375,7 @@ class NeuralNetwork:
             loss: float
                 Average loss over mini-batch.
         """
-        loss = - np.average(y * np.log(y_hat + self._epsilon) + (1 - y_hat) * np.log(1 - y_hat + self._epsilon)) # add epsilon to log function to prevent log(0)
+        loss = - np.average(y * np.log(y_hat + self._epsilon) + (1 - y) * np.log(1 - y_hat + self._epsilon)) # add epsilon to log function to prevent log(0)
         return loss
 
     def _binary_cross_entropy_backprop(self, y: ArrayLike, y_hat: ArrayLike) -> ArrayLike:
@@ -392,7 +392,8 @@ class NeuralNetwork:
             dA: ArrayLike
                 partial derivative of loss with respect to A matrix.
         """
-        pass
+        dA = -(y * (1/y_hat) - ((1-y) * (1/(1-y_hat))))
+        return dA
 
     def _mean_squared_error(self, y: ArrayLike, y_hat: ArrayLike) -> float:
         """

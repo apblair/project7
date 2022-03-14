@@ -104,14 +104,14 @@ Proper unit tests for:
 - [x] _single_backprop method (1 point)
 - [ ] predict method (1 point)
 - [x] binary_cross_entropy loss method (0.5 points)
-- [ ] binary_cross_entropy_backprop method (0.5 points)
+- [x] binary_cross_entropy_backprop method (0.5 points)
 - [x] mean_squared_error loss function (0.5 points)
-- [ ] mean_squared_error_backprop (0.5 points)
+- [x] mean_squared_error_backprop (0.5 points)
 - [x] one_hot_encode_seqs function (0.5 points)
 - [ ] sample_seqs function (0.5 points)
 
 ## Packaging (3 points)
-- [ ] pip installable (1 point)
-- [ ] github actions (installing + testing) (2 points)
+- [x] pip installable (1 point)
+- [x] github actions (installing + testing) (2 points)
 
 
