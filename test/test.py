@@ -82,7 +82,11 @@ def test_mean_squared_error_backprop():
 
 
 def test_one_hot_encode():
-    pass
+    """
+    Check preprocess.one_hot_encode_seqs using manual calculation
+    """
+    encoding = preprocess.one_hot_encode_seqs(['AGA'])
+    assert np.allclose(encoding, np.array([1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0]))
 
 
 def test_sample_seqs():
@@ -93,3 +97,4 @@ test_single_backprop()
 test_forward()
 test_mean_squared_error()
 test_binary_cross_entropy()
+test_one_hot_encode()

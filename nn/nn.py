@@ -226,7 +226,6 @@ class NeuralNetwork:
                 Dictionary containing the gradient information from this pass of backprop.
         """
         loss_function = self._select_function(function_type='loss', loss=self._loss_func)
-        print(loss_function)
         grad_dict = {}
 
     def _update_params(self, grad_dict: Dict[str, ArrayLike]):
