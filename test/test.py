@@ -113,7 +113,6 @@ def test_sample_seqs():
     '''
     Check preprocess.sample_seqs using manual calculation
     '''
-    # Try more positive than negative labels
     seqs = ["ATA", "ATC", "AGC", "AGA", "TGT"]
     labels = [0, 0, 1, 1, 0]
     sampled_seqs,sampled_labels = preprocess.sample_seqs(seqs, labels)
