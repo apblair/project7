@@ -255,8 +255,12 @@ class NeuralNetwork:
         Returns:
             None
         """
-        for k in self._param_dict:
-            self._param_dict[k] = self._param_dict[k] - self._lr*grad_dict[k]
+        for idx, layer in enumerate(self.arch):
+            layer_idx = idx + 1
+            print(self._param_dict['W'+str(layer_idx)])
+            print(grad_dict['dW'+str(layer_idx)])
+            self._param_dict['W'+str(layer_idx)] = self._param_dict['W'+str(layer_idx)] - (self._lr * grad_dict['dW'+str(layer_idx)])
+            self._param_dict['b'+str(layer_idx)] = self._param_dict['b'+str(layer_idx)] - (self._lr * grad_dict['db'+str(layer_idx)])
 
     def fit(self,
             X_train: ArrayLike,
@@ -296,7 +300,7 @@ class NeuralNetwork:
                 grad_dict = self.backprop(y, y_hat, cache)
                 self._update_params(grad_dict)
             
-            # Predict
+            # Predict for each epoch
             y_hat_train = self.predict(X_train)
             y_hat_val = self.predict(X_val)    
             
