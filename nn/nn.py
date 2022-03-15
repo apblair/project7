@@ -165,10 +165,10 @@ class NeuralNetwork:
                                                 self._param_dict['b'+str(layer_idx)], # b_curr
                                                 A_prev, # A_prev
                                                 layer['activation']) # activation
-            A_prev = A_curr # set layer activation matrix
             # Store Z and A matrices in cache dictionary for use in backprop
             cache["A" + str(layer_idx)] = A_curr 
             cache["Z" + str(layer_idx)] = Z_curr
+            A_prev = A_curr # set layer activation matrix
         return A_prev, cache
 
     def _single_backprop(self,
@@ -233,13 +233,14 @@ class NeuralNetwork:
             dA_prev, dW_curr, db_curr = self._single_backprop(self._param_dict['W'+str(layer_idx)], # W_curr
                                                             self._param_dict['b'+str(layer_idx)], # b_curr
                                                             cache['Z'+ str(layer_idx)], # Z_curr
-                                                            cache['A'+ str(layer_idx)], # A_prev
+                                                            cache['A'+ str(layer_idx-1)], # A_prev n-1
                                                             dA_curr, # dA_curr
                                                             layer['activation']) # activation_curr
-            dA_curr = dA_prev
             grad_dict['dW' + str(layer_idx)] = dW_curr
             grad_dict['db' + str(layer_idx)] = db_curr
             grad_dict['dA_prev' + str(layer_idx)] = dA_prev
+            dA_curr = dA_prev
+
         return grad_dict
 
 
@@ -257,8 +258,6 @@ class NeuralNetwork:
         """
         for idx, layer in enumerate(self.arch):
             layer_idx = idx + 1
-            print(self._param_dict['W'+str(layer_idx)])
-            print(grad_dict['dW'+str(layer_idx)])
             self._param_dict['W'+str(layer_idx)] = self._param_dict['W'+str(layer_idx)] - (self._lr * grad_dict['dW'+str(layer_idx)])
             self._param_dict['b'+str(layer_idx)] = self._param_dict['b'+str(layer_idx)] - (self._lr * grad_dict['db'+str(layer_idx)])
 
