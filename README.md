@@ -38,8 +38,8 @@ TODO:
 - [x] Generate an instance of your NeuralNetwork class for the 64x16x64 autoencoder
 - [x] Read in toy dataset 'digits' from sklearn using digits = sklearn.datasets.load_digits()
 - [x] Split the digits dataset into a train and a validation set
-- [ ] Train your autoencoder on the train split of your digits dataset
-- [ ] Plot your training and validation loss per epoch
+- [x] Train your autoencoder on the train split of your digits dataset
+- [x] Plot your training and validation loss per epoch
 - [ ] Explain in your jupyter notebook why you chose the hyperparameter values that you did
 - [ ] Quantify your average reconstruction error over the dataset.
 

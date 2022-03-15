@@ -46,6 +46,7 @@ def test_single_backprop():
                                                     network.arch[0]['activation'])
     assert dA_prev.sum() == dW_curr.sum()
     assert dA_prev[0][0] and dW_curr[0][-1] == db_curr[[0]]
+    # NOTE: single backprop unit test with one layer did not n-1 activation layer
 
 def test_predict():
     '''
