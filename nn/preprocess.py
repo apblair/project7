@@ -2,6 +2,7 @@
 
 
 # Importing Dependencies
+from cProfile import label
 import numpy as np
 from typing import List, Tuple
 from numpy.typing import ArrayLike
@@ -51,4 +52,19 @@ def sample_seqs(seqs: List[str], labels: List[bool]) -> Tuple[List[str], List[bo
         sampled_labels: List[bool]
             List of labels for the sampled sequences
     """
-    pass
+    seqs=np.array(seqs)
+    labels=np.array(labels)
+    label_dict = {label:seqs[labels==label] for label in list(set(labels))}
+    label, seq_count = np.unique(labels, return_counts=True)
+    if seq_count[0] < seq_count[1]:
+        size=seq_count[1]-seq_count[0]
+        sampled_seqs = list(seqs) + list(np.random.choice(label_dict[label[0]], size=size, replace = True))
+        sampled_labels = list(labels) + [label[0]]*size
+        return sampled_seqs, sampled_labels
+    elif seq_count[0] > seq_count[1]:
+        size=seq_count[0]-seq_count[1]
+        sampled_seqs = list(seqs) + list(np.random.choice(label_dict[label[1]], size=size, replace = True))
+        sampled_labels = list(labels) + [label[1]]*size
+        return sampled_seqs, sampled_labels
+    elif seq_count == seq_count:
+        return list(seqs), list(labels)

@@ -110,14 +110,13 @@ def test_one_hot_encode():
 
 
 def test_sample_seqs():
-    pass
-
-test_single_forward()
-test_single_backprop()
-test_forward()
-test_mean_squared_error()
-test_mean_squared_error_backprop()
-test_binary_cross_entropy()
-test_binary_cross_entropy_backprop()
-test_one_hot_encode()
-test_predict()
+    '''
+    Check preprocess.sample_seqs using manual calculation
+    '''
+    # Try more positive than negative labels
+    seqs = ["ATA", "ATC", "AGC", "AGA", "TGT"]
+    labels = [0, 0, 1, 1, 0]
+    sampled_seqs,sampled_labels = preprocess.sample_seqs(seqs, labels)
+    import collections
+    label_count_dict = collections.Counter(sampled_labels)
+    assert label_count_dict[0] == label_count_dict[1]
