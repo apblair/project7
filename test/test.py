@@ -120,3 +120,14 @@ def test_sample_seqs():
     import collections
     label_count_dict = collections.Counter(sampled_labels)
     assert label_count_dict[0] == label_count_dict[1]
+
+test_forward()
+test_single_forward()
+test_single_backprop()
+test_predict()
+test_binary_cross_entropy()
+test_binary_cross_entropy_backprop()
+test_mean_squared_error()
+test_mean_squared_error_backprop()
+test_one_hot_encode()
+test_sample_seqs()

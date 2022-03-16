@@ -31,8 +31,11 @@ def one_hot_encode_seqs(seq_arr: List[str]) -> ArrayLike:
             Then, AGA -> [1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0]
     """
     encoding_dict = {"A": [1, 0, 0, 0], "T": [0, 1, 0, 0], "C": [0, 0, 1, 0], "G": [0, 0, 0, 1]}
-    encodings = np.array([encoding_dict[nucleotide] for sequence in seq_arr for nucleotide in sequence]).flatten()
-    return encodings
+    encoding_list = []
+    for sequence in seq_arr:
+        encoding = np.array([encoding_dict[nucleotide] for nucleotide in sequence]).flatten()
+        encoding_list.append(encoding)
+    return np.array(encoding_list)
 
 
 def sample_seqs(seqs: List[str], labels: List[bool]) -> Tuple[List[str], List[bool]]:
