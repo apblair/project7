@@ -40,7 +40,7 @@ TODO:
 - [x] Split the digits dataset into a train and a validation set
 - [x] Train your autoencoder on the train split of your digits dataset
 - [x] Plot your training and validation loss per epoch
-- [-] Explain in your jupyter notebook why you chose the hyperparameter values that you did
+- [ ] Explain in your jupyter notebook why you chose the hyperparameter values that you did
 - [x] Quantify your average reconstruction error over the dataset.
 
 
@@ -64,12 +64,12 @@ TODO:
 - [x] Use the 'read_text_file' function from preprocess.py to read in the 137 positive Rap1 motif examples
 - [x] Use the 'read_fasta_file' function to read in all the negative examples from all 1kb upstream in yeast.
 - [x] Implement a sampling scheme in the 'sample_seq' function in the preprocess.py file
-- [-] Explain in your jupyter notebook why chose the sampling scheme that you did.
+- [x] Explain in your jupyter notebook why chose the sampling scheme that you did.
 - [x] Generate a training and a validation set for training your classifier.
 - [x] One hot encode your training and validation sets using your implementation of the 'one_hot_encode_seqs' function in the preprocess.py file
 - [x] Train your neural network!
-- [-] Explain your choice of loss function in the jupyter notebook
-- [-] Explain your choice of hyperparameters in the jupyter notebook
+- [ ] Explain your choice of loss function in the jupyter notebook
+- [ ] Explain your choice of hyperparameters in the jupyter notebook
 - [x] Plot the training and validation loss curves per epoch
 - [x] Print out the accuracy of your classifier on your validation dataset
 
@@ -93,9 +93,9 @@ TODO:
 - [x] Explanation of your sampling scheme (2 points)
 - [x] Proper generation of a training set and a validation set (2 point)
 - [x] Successfully train your classifeir (4 points)
-- [-] Explain the choice of your loss function in the jupyter notebook (2 points)
+- [ ] Explain the choice of your loss function in the jupyter notebook (2 points)
 - [x] Plots of training and validation loss (2 points)
-- [-] Print out accuracy of the classifier on the testing set (1 point)
+- [x] Print out accuracy of the classifier on the testing set (1 point)
 
 ## Testing (7 points)
 Proper unit tests for:
